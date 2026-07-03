@@ -42,7 +42,11 @@ public class CustomerFrame extends JFrame {
                 new SearchCustomerFrame();
             });
 
-        JButton updateBtn=new JButton("Update Customer");
+        JButton updateBtn = new JButton("Update Customer");
+
+            updateBtn.addActionListener(e -> {
+                new UpdateCustomerFrame();
+        });
 
         JButton deleteBtn=new JButton("Delete Customer");
 

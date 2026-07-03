@@ -19,5 +19,9 @@ public class CustomerService {
     public Customer getCustomerById(int customerId) {
         return customerDAO.getCustomerById(customerId);
     }
+
+    public boolean updateCustomer(Customer customer) {
+        return customerDAO.updateCustomer(customer);
+    }
 }
 

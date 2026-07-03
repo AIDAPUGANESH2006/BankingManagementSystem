@@ -132,5 +132,50 @@ public class CustomerDAO {
             return null;
         }
 
+    public boolean updateCustomer(Customer customer) {
+
+        String sql = """
+                UPDATE customers
+                SET first_name = ?,
+                    last_name = ?,
+                    gender = ?,
+                    date_of_birth = ?,
+                    phone = ?,
+                    email = ?,
+                    address = ?,
+                    city = ?,
+                    state = ?,
+                    pincode = ?
+                WHERE customer_id = ?
+                """;
+
+        try {
+
+            Connection conn = DBConnection.getConnection();
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, customer.getFirstName());
+            ps.setString(2, customer.getLastName());
+            ps.setString(3, customer.getGender());
+            ps.setDate(4, customer.getDateOfBirth());
+            ps.setString(5, customer.getPhone());
+            ps.setString(6, customer.getEmail());
+            ps.setString(7, customer.getAddress());
+            ps.setString(8, customer.getCity());
+            ps.setString(9, customer.getState());
+            ps.setString(10, customer.getPincode());
+            ps.setInt(11, customer.getCustomerId());
+
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
 }
 
