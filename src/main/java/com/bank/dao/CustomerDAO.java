@@ -54,44 +54,83 @@ public class CustomerDAO {
 
     public List<Customer> getAllCustomers() {
 
-    List<Customer> customers = new ArrayList<>();
+            List<Customer> customers = new ArrayList<>();
 
-    String sql = "SELECT * FROM customers";
+            String sql = "SELECT * FROM customers";
 
-    try {
+            try {
 
-        Connection conn = DBConnection.getConnection();
+                Connection conn = DBConnection.getConnection();
 
-        PreparedStatement ps = conn.prepareStatement(sql);
+                PreparedStatement ps = conn.prepareStatement(sql);
 
-        ResultSet rs = ps.executeQuery();
+                ResultSet rs = ps.executeQuery();
 
-        while (rs.next()) {
+                while (rs.next()) {
 
-            Customer customer = new Customer();
+                    Customer customer = new Customer();
 
-            customer.setCustomerId(rs.getInt("customer_id"));
-            customer.setFirstName(rs.getString("first_name"));
-            customer.setLastName(rs.getString("last_name"));
-            customer.setGender(rs.getString("gender"));
-            customer.setDateOfBirth(rs.getDate("date_of_birth"));
-            customer.setPhone(rs.getString("phone"));
-            customer.setEmail(rs.getString("email"));
-            customer.setAddress(rs.getString("address"));
-            customer.setCity(rs.getString("city"));
-            customer.setState(rs.getString("state"));
-            customer.setPincode(rs.getString("pincode"));
+                    customer.setCustomerId(rs.getInt("customer_id"));
+                    customer.setFirstName(rs.getString("first_name"));
+                    customer.setLastName(rs.getString("last_name"));
+                    customer.setGender(rs.getString("gender"));
+                    customer.setDateOfBirth(rs.getDate("date_of_birth"));
+                    customer.setPhone(rs.getString("phone"));
+                    customer.setEmail(rs.getString("email"));
+                    customer.setAddress(rs.getString("address"));
+                    customer.setCity(rs.getString("city"));
+                    customer.setState(rs.getString("state"));
+                    customer.setPincode(rs.getString("pincode"));
 
-            customers.add(customer);
-        }
+                    customers.add(customer);
+                }
 
-    } catch (Exception e) {
+            } catch (Exception e) {
 
-        e.printStackTrace();
-    }
+                e.printStackTrace();
+            }
 
-    return customers;
+            return customers;
    }
+   public Customer getCustomerById(int customerId) {
+
+            String sql = "SELECT * FROM customers WHERE customer_id = ?";
+
+            try {
+
+                Connection conn = DBConnection.getConnection();
+
+                PreparedStatement ps = conn.prepareStatement(sql);
+
+                ps.setInt(1, customerId);
+
+                ResultSet rs = ps.executeQuery();
+
+                if (rs.next()) {
+
+                    Customer customer = new Customer();
+
+                    customer.setCustomerId(rs.getInt("customer_id"));
+                    customer.setFirstName(rs.getString("first_name"));
+                    customer.setLastName(rs.getString("last_name"));
+                    customer.setGender(rs.getString("gender"));
+                    customer.setDateOfBirth(rs.getDate("date_of_birth"));
+                    customer.setPhone(rs.getString("phone"));
+                    customer.setEmail(rs.getString("email"));
+                    customer.setAddress(rs.getString("address"));
+                    customer.setCity(rs.getString("city"));
+                    customer.setState(rs.getString("state"));
+                    customer.setPincode(rs.getString("pincode"));
+
+                    return customer;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
 
 }
 

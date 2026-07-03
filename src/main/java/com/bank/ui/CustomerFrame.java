@@ -36,7 +36,11 @@ public class CustomerFrame extends JFrame {
                new ViewCustomersFrame();
          });
 
-        JButton searchBtn=new JButton("Search Customer");
+        JButton searchBtn = new JButton("Search Customer");
+
+            searchBtn.addActionListener(e -> {
+                new SearchCustomerFrame();
+            });
 
         JButton updateBtn=new JButton("Update Customer");
 
