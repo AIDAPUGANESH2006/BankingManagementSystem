@@ -176,6 +176,26 @@ public class CustomerDAO {
 
         return false;
     }
+   public boolean deleteCustomer(int customerId) {
 
+    String sql = "DELETE FROM customers WHERE customer_id = ?";
+
+    try {
+
+        Connection conn = DBConnection.getConnection();
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        ps.setInt(1, customerId);
+
+        return ps.executeUpdate() > 0;
+
+    } catch (Exception e) {
+
+        System.out.println("Cannot delete customer.");
+
+        return false;
+    }
+   }
 }
 

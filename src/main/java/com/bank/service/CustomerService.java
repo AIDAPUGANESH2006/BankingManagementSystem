@@ -23,5 +23,8 @@ public class CustomerService {
     public boolean updateCustomer(Customer customer) {
         return customerDAO.updateCustomer(customer);
     }
+    public boolean deleteCustomer(int customerId) {
+       return customerDAO.deleteCustomer(customerId);
+   }
 }
 

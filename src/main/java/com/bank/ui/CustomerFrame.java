@@ -48,10 +48,20 @@ public class CustomerFrame extends JFrame {
                 new UpdateCustomerFrame();
         });
 
-        JButton deleteBtn=new JButton("Delete Customer");
+        JButton deleteBtn = new JButton("Delete Customer");
+
+            deleteBtn.addActionListener(e -> {
+                new DeleteCustomerFrame();
+         });
 
         JButton backBtn=new JButton("Back");
+            backBtn.addActionListener(e -> {
 
+            dispose();                  // Close Customer Management
+
+            new DashboardFrame();       // Open Dashboard
+
+        });
         panel.add(title);
 
         panel.add(addBtn);

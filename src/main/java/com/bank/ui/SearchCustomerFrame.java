@@ -1,146 +1,168 @@
 package com.bank.ui;
 
-import javax.swing.*;
-import java.awt.*;
-
 import com.bank.model.Customer;
 import com.bank.service.CustomerService;
 
+import javax.swing.*;
+import java.awt.*;
+
 public class SearchCustomerFrame extends JFrame {
 
-    JTextField customerIdField;
+    private JTextField customerIdField;
 
-    JTextField firstNameField;
-    JTextField lastNameField;
-    JTextField genderField;
-    JTextField dobField;
-    JTextField phoneField;
-    JTextField emailField;
-    JTextField addressField;
-    JTextField cityField;
-    JTextField stateField;
-    JTextField pincodeField;
+    private JLabel idValue;
+    private JLabel nameValue;
+    private JLabel genderValue;
+    private JLabel dobValue;
+    private JLabel phoneValue;
+    private JLabel emailValue;
+    private JLabel addressValue;
+    private JLabel cityValue;
+    private JLabel stateValue;
+    private JLabel pincodeValue;
 
-    JButton searchButton;
-    JButton backButton;
-
-    CustomerService customerService = new CustomerService();
+    private CustomerService customerService = new CustomerService();
 
     public SearchCustomerFrame() {
 
         setTitle("Search Customer");
-        setSize(600,600);
+        setSize(500,550);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        JPanel panel = new JPanel(new GridLayout(12,2,10,10));
-        panel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(15,20,15,20));
 
-        panel.add(new JLabel("Customer ID"));
-        customerIdField = new JTextField();
-        panel.add(customerIdField);
+        JLabel title = new JLabel("SEARCH CUSTOMER", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD,22));
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        panel.add(new JLabel("First Name"));
-        firstNameField = new JTextField();
-        firstNameField.setEditable(false);
-        panel.add(firstNameField);
+        panel.add(title);
+        panel.add(Box.createVerticalStrut(20));
 
-        panel.add(new JLabel("Last Name"));
-        lastNameField = new JTextField();
-        lastNameField.setEditable(false);
-        panel.add(lastNameField);
+        JPanel searchPanel = new JPanel(new FlowLayout());
 
-        panel.add(new JLabel("Gender"));
-        genderField = new JTextField();
-        genderField.setEditable(false);
-        panel.add(genderField);
+        searchPanel.add(new JLabel("Customer ID"));
 
-        panel.add(new JLabel("Date of Birth"));
-        dobField = new JTextField();
-        dobField.setEditable(false);
-        panel.add(dobField);
+        customerIdField = new JTextField(12);
+        searchPanel.add(customerIdField);
 
-        panel.add(new JLabel("Phone"));
-        phoneField = new JTextField();
-        phoneField.setEditable(false);
-        panel.add(phoneField);
+        JButton searchButton = new JButton("Search");
+        searchPanel.add(searchButton);
 
-        panel.add(new JLabel("Email"));
-        emailField = new JTextField();
-        emailField.setEditable(false);
-        panel.add(emailField);
+        panel.add(searchPanel);
+        panel.add(Box.createVerticalStrut(20));
 
-        panel.add(new JLabel("Address"));
-        addressField = new JTextField();
-        addressField.setEditable(false);
-        panel.add(addressField);
+        JPanel detailsPanel = new JPanel(new GridLayout(10,2,10,10));
+        detailsPanel.setBorder(BorderFactory.createTitledBorder("Customer Details"));
 
-        panel.add(new JLabel("City"));
-        cityField = new JTextField();
-        cityField.setEditable(false);
-        panel.add(cityField);
+        idValue = new JLabel("-");
+        nameValue = new JLabel("-");
+        genderValue = new JLabel("-");
+        dobValue = new JLabel("-");
+        phoneValue = new JLabel("-");
+        emailValue = new JLabel("-");
+        addressValue = new JLabel("-");
+        cityValue = new JLabel("-");
+        stateValue = new JLabel("-");
+        pincodeValue = new JLabel("-");
 
-        panel.add(new JLabel("State"));
-        stateField = new JTextField();
-        stateField.setEditable(false);
-        panel.add(stateField);
+        detailsPanel.add(new JLabel("Customer ID"));
+        detailsPanel.add(idValue);
 
-        panel.add(new JLabel("Pincode"));
-        pincodeField = new JTextField();
-        pincodeField.setEditable(false);
-        panel.add(pincodeField);
+        detailsPanel.add(new JLabel("Name"));
+        detailsPanel.add(nameValue);
 
-        searchButton = new JButton("Search");
-        backButton = new JButton("Back");
+        detailsPanel.add(new JLabel("Gender"));
+        detailsPanel.add(genderValue);
 
-        searchButton.addActionListener(e -> {
+        detailsPanel.add(new JLabel("Date of Birth"));
+        detailsPanel.add(dobValue);
 
-            try {
+        detailsPanel.add(new JLabel("Phone"));
+        detailsPanel.add(phoneValue);
 
-                int customerId = Integer.parseInt(customerIdField.getText());
+        detailsPanel.add(new JLabel("Email"));
+        detailsPanel.add(emailValue);
 
-                Customer customer = customerService.getCustomerById(customerId);
+        detailsPanel.add(new JLabel("Address"));
+        detailsPanel.add(addressValue);
 
-                if (customer != null) {
+        detailsPanel.add(new JLabel("City"));
+        detailsPanel.add(cityValue);
 
-                    firstNameField.setText(customer.getFirstName());
-                    lastNameField.setText(customer.getLastName());
-                    genderField.setText(customer.getGender());
-                    dobField.setText(customer.getDateOfBirth().toString());
-                    phoneField.setText(customer.getPhone());
-                    emailField.setText(customer.getEmail());
-                    addressField.setText(customer.getAddress());
-                    cityField.setText(customer.getCity());
-                    stateField.setText(customer.getState());
-                    pincodeField.setText(customer.getPincode());
+        detailsPanel.add(new JLabel("State"));
+        detailsPanel.add(stateValue);
 
-                } else {
+        detailsPanel.add(new JLabel("Pincode"));
+        detailsPanel.add(pincodeValue);
 
-                    JOptionPane.showMessageDialog(
-                            this,
-                            "Customer Not Found!"
-                    );
+        panel.add(detailsPanel);
+        panel.add(Box.createVerticalStrut(20));
 
-                }
+        JButton backButton = new JButton("Back");
+        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(backButton);
 
-            } catch (Exception ex) {
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Enter a valid Customer ID."
-                );
-
-            }
-
-        });
+        searchButton.addActionListener(e -> searchCustomer());
 
         backButton.addActionListener(e -> dispose());
-
-        panel.add(searchButton);
-        panel.add(backButton);
 
         add(panel);
 
         setVisible(true);
     }
+
+    private void searchCustomer() {
+
+        try {
+
+            int id = Integer.parseInt(customerIdField.getText());
+
+            Customer customer = customerService.getCustomerById(id);
+
+            if(customer == null){
+
+                JOptionPane.showMessageDialog(this,"Customer Not Found!");
+
+                clearLabels();
+
+                return;
+            }
+
+            idValue.setText(String.valueOf(customer.getCustomerId()));
+            nameValue.setText(customer.getFirstName()+" "+customer.getLastName());
+            genderValue.setText(customer.getGender());
+            dobValue.setText(customer.getDateOfBirth().toString());
+            phoneValue.setText(customer.getPhone());
+            emailValue.setText(customer.getEmail());
+            addressValue.setText(customer.getAddress());
+            cityValue.setText(customer.getCity());
+            stateValue.setText(customer.getState());
+            pincodeValue.setText(customer.getPincode());
+
+        }
+        catch(Exception e){
+
+            JOptionPane.showMessageDialog(this,"Enter a valid Customer ID.");
+
+        }
+
+    }
+
+    private void clearLabels(){
+
+        idValue.setText("-");
+        nameValue.setText("-");
+        genderValue.setText("-");
+        dobValue.setText("-");
+        phoneValue.setText("-");
+        emailValue.setText("-");
+        addressValue.setText("-");
+        cityValue.setText("-");
+        stateValue.setText("-");
+        pincodeValue.setText("-");
+    }
+
 }
