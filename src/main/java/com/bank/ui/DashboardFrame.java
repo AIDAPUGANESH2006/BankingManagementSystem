@@ -45,7 +45,9 @@ public class DashboardFrame extends JFrame {
         customerBtn.addActionListener(e -> {
                 new CustomerFrame();
            });
-
+        accountBtn.addActionListener(e -> {
+                new AccountFrame();
+            });
         center.add(customerBtn);
         center.add(accountBtn);
         center.add(depositBtn);
