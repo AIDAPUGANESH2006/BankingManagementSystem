@@ -33,9 +33,19 @@ public class AccountFrame extends JFrame {
 
         JButton viewBtn = new JButton("View Accounts");
 
+        viewBtn.addActionListener(e -> {
+
+            new ViewAccountsFrame();
+
+        });
+
         JButton searchBtn = new JButton("Search Account");
 
+        searchBtn.addActionListener(e -> new SearchAccountFrame());
+
         JButton updateBtn = new JButton("Update Account");
+
+        updateBtn.addActionListener(e -> new UpdateAccountFrame());
 
         JButton closeBtn = new JButton("Close Account");
 
