@@ -53,7 +53,7 @@ public class AccountDAO {
 
             List<Account> accounts = new ArrayList<>();
 
-            String sql = "SELECT * FROM accounts";
+            String sql = "SELECT * FROM accounts WHERE status_id = 1";
 
             try {
 
@@ -157,6 +157,43 @@ public class AccountDAO {
             }
 
             return false;
+        }
+
+
+
+        public boolean closeAccount(String accountNumber) {
+
+            String checkSql = "SELECT status_id FROM accounts WHERE account_number = ?";
+            String updateSql = "UPDATE accounts SET status_id = 2 WHERE account_number = ?";
+
+            try {
+
+                Connection conn = DBConnection.getConnection();
+
+                // Check account status
+                PreparedStatement checkPs = conn.prepareStatement(checkSql);
+                checkPs.setString(1, accountNumber);
+
+                ResultSet rs = checkPs.executeQuery();
+
+                if (!rs.next()) {
+                    return false;   // Account not found
+                }
+
+                if (rs.getInt("status_id") == 2) {
+                    return false;   // Already closed
+                }
+
+                PreparedStatement updatePs = conn.prepareStatement(updateSql);
+                updatePs.setString(1, accountNumber);
+
+                return updatePs.executeUpdate() > 0;
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+                return false;
+            }
         }
 
 }

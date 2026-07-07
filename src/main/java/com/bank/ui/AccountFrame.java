@@ -49,6 +49,10 @@ public class AccountFrame extends JFrame {
 
         JButton closeBtn = new JButton("Close Account");
 
+        closeBtn.addActionListener(e -> {
+            new CloseAccountFrame();
+        });
+
         JButton backBtn = new JButton("Back");
 
         backBtn.addActionListener(e -> dispose());

@@ -9,9 +9,9 @@ import java.awt.*;
 public class UpdateAccountFrame extends JFrame {
 
     JTextField accountNumberField;
-    JTextField branchIdField;
-    JTextField accountTypeIdField;
-    JTextField statusIdField;
+    JTextField branchField;
+    JTextField typeField;
+    JTextField statusField;
     JTextField balanceField;
 
     JButton searchButton;
@@ -23,80 +23,61 @@ public class UpdateAccountFrame extends JFrame {
     public UpdateAccountFrame() {
 
         setTitle("Update Account");
-        setSize(500, 400);
+        setSize(500,350);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        JPanel panel = new JPanel(new GridLayout(6, 3, 10, 10));
+        JPanel panel = new JPanel(new GridLayout(6,2,10,10));
         panel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 
-        // Account Number + Search
         panel.add(new JLabel("Account Number"));
-
         accountNumberField = new JTextField();
         panel.add(accountNumberField);
 
         searchButton = new JButton("Search");
         panel.add(searchButton);
+        panel.add(new JLabel());
 
-        // Branch ID
         panel.add(new JLabel("Branch ID"));
+        branchField = new JTextField();
+        panel.add(branchField);
 
-        branchIdField = new JTextField();
-        panel.add(branchIdField);
-
-        panel.add(new JLabel(""));
-
-        // Account Type ID
         panel.add(new JLabel("Account Type ID"));
+        typeField = new JTextField();
+        panel.add(typeField);
 
-        accountTypeIdField = new JTextField();
-        panel.add(accountTypeIdField);
-
-        panel.add(new JLabel(""));
-
-        // Status ID
         panel.add(new JLabel("Status ID"));
+        statusField = new JTextField();
+        panel.add(statusField);
 
-        statusIdField = new JTextField();
-        panel.add(statusIdField);
-
-        panel.add(new JLabel(""));
-
-        // Balance
         panel.add(new JLabel("Balance"));
-
         balanceField = new JTextField();
         panel.add(balanceField);
 
-        panel.add(new JLabel(""));
-
-        // Buttons
         updateButton = new JButton("Update Account");
         backButton = new JButton("Back");
 
         panel.add(updateButton);
         panel.add(backButton);
-        panel.add(new JLabel(""));
 
         add(panel);
 
-        // ================= SEARCH =================
+        // SEARCH
 
         searchButton.addActionListener(e -> {
 
-            String accountNumber = accountNumberField.getText();
+            Account account = accountService.getAccountByNumber(
+                    accountNumberField.getText()
+            );
 
-            Account account = accountService.getAccountByNumber(accountNumber);
+            if(account != null){
 
-            if (account != null) {
-
-                branchIdField.setText(String.valueOf(account.getBranchId()));
-                accountTypeIdField.setText(String.valueOf(account.getAccountTypeId()));
-                statusIdField.setText(String.valueOf(account.getStatusId()));
+                branchField.setText(String.valueOf(account.getBranchId()));
+                typeField.setText(String.valueOf(account.getAccountTypeId()));
+                statusField.setText(String.valueOf(account.getStatusId()));
                 balanceField.setText(String.valueOf(account.getBalance()));
 
-            } else {
+            }else{
 
                 JOptionPane.showMessageDialog(
                         this,
@@ -107,50 +88,46 @@ public class UpdateAccountFrame extends JFrame {
 
         });
 
-        // ================= UPDATE =================
+        // UPDATE
 
         updateButton.addActionListener(e -> {
 
-            try {
+            try{
 
                 Account account = new Account();
 
                 account.setAccountNumber(accountNumberField.getText());
-                account.setBranchId(Integer.parseInt(branchIdField.getText()));
-                account.setAccountTypeId(Integer.parseInt(accountTypeIdField.getText()));
-                account.setStatusId(Integer.parseInt(statusIdField.getText()));
+                account.setBranchId(Integer.parseInt(branchField.getText()));
+                account.setAccountTypeId(Integer.parseInt(typeField.getText()));
+                account.setStatusId(Integer.parseInt(statusField.getText()));
                 account.setBalance(Double.parseDouble(balanceField.getText()));
 
-                boolean updated = accountService.updateAccount(account);
-
-                if (updated) {
+                if(accountService.updateAccount(account)){
 
                     JOptionPane.showMessageDialog(
                             this,
                             "Account Updated Successfully!"
                     );
 
-                } else {
+                }else{
 
                     JOptionPane.showMessageDialog(
                             this,
-                            "Failed to Update Account!"
+                            "Update Failed!"
                     );
 
                 }
 
-            } catch (Exception ex) {
+            }catch(Exception ex){
 
                 JOptionPane.showMessageDialog(
                         this,
-                        "Enter Valid Details!"
+                        "Invalid Input!"
                 );
 
             }
 
         });
-
-        // ================= BACK =================
 
         backButton.addActionListener(e -> dispose());
 

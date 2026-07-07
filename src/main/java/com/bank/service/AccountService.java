@@ -28,4 +28,10 @@ public class AccountService {
 
     }
 
+    public boolean closeAccount(String accountNumber) {
+
+        return accountDAO.closeAccount(accountNumber);
+
+    }
+
 }
