@@ -1,5 +1,8 @@
 package com.bank.service;
 
+
+import com.bank.dao.TransactionDAO;
+import com.bank.model.Transaction;
 import com.bank.dao.AccountDAO;
 import com.bank.model.Account;
 import java.util.List;
@@ -33,5 +36,36 @@ public class AccountService {
         return accountDAO.closeAccount(accountNumber);
 
     }
+
+    public boolean depositMoney(String accountNumber, double amount) {
+
+            TransactionDAO transactionDAO = new TransactionDAO();
+
+            Account account = accountDAO.getAccountByNumber(accountNumber);
+
+            if (account == null) {
+                return false;
+            }
+
+            double newBalance = account.getBalance() + amount;
+
+            boolean updated = accountDAO.updateBalance(account.getAccountId(), newBalance);
+
+            if (!updated) {
+                return false;
+            }
+
+            Transaction transaction = new Transaction();
+
+            transaction.setAccountId(account.getAccountId());
+            transaction.setTransactionTypeId(1);   // Deposit
+            transaction.setAmount(amount);
+            transaction.setTransactionDate(new java.sql.Date(System.currentTimeMillis()));
+            transaction.setRemarks("Cash Deposit");
+
+            transactionDAO.addTransaction(transaction);
+
+            return true;
+        }
 
 }

@@ -36,6 +36,9 @@ public class DashboardFrame extends JFrame {
         JButton customerBtn = new JButton("Customer Management");
         JButton accountBtn = new JButton("Account Management");
         JButton depositBtn = new JButton("Deposit Money");
+        
+        depositBtn.addActionListener(e -> new DepositFrame());
+
         JButton withdrawBtn = new JButton("Withdraw Money");
         JButton transferBtn = new JButton("Transfer Money");
         JButton transactionBtn = new JButton("Transaction History");

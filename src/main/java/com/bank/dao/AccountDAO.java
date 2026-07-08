@@ -196,4 +196,67 @@ public class AccountDAO {
             }
         }
 
+        public Account getAccountByNumber(String accountNumber) {
+
+            String sql = "SELECT * FROM accounts WHERE account_number=?";
+
+            try {
+
+                Connection conn = DBConnection.getConnection();
+
+                PreparedStatement ps = conn.prepareStatement(sql);
+
+                ps.setString(1, accountNumber);
+
+                ResultSet rs = ps.executeQuery();
+
+                if(rs.next()) {
+
+                    Account account = new Account();
+
+                    account.setAccountId(rs.getInt("account_id"));
+                    account.setAccountNumber(rs.getString("account_number"));
+                    account.setCustomerId(rs.getInt("customer_id"));
+                    account.setBranchId(rs.getInt("branch_id"));
+                    account.setAccountTypeId(rs.getInt("account_type_id"));
+                    account.setStatusId(rs.getInt("status_id"));
+                    account.setBalance(rs.getDouble("balance"));
+                    account.setOpenedDate(rs.getDate("opened_date"));
+
+                    return account;
+                }
+
+            } catch(Exception e) {
+
+                e.printStackTrace();
+
+            }
+
+            return null;
+        }
+        public boolean updateBalance(int accountId, double newBalance) {
+
+            String sql = """
+                    UPDATE accounts
+                    SET balance=?
+                    WHERE account_id=?
+                    """;
+
+            try {
+
+                Connection conn = DBConnection.getConnection();
+
+                PreparedStatement ps = conn.prepareStatement(sql);
+
+                ps.setDouble(1, newBalance);
+                ps.setInt(2, accountId);
+
+                return ps.executeUpdate() > 0;
+
+            } catch(Exception e) {
+
+                e.printStackTrace();
+                return false;
+            }
+        }
 }
