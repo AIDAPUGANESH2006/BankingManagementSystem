@@ -68,4 +68,51 @@ public class AccountService {
             return true;
         }
 
+        public boolean withdrawMoney(String accountNumber, double amount) {
+
+            TransactionDAO transactionDAO = new TransactionDAO();
+
+            Account account = accountDAO.getAccountByNumber(accountNumber);
+
+            // Account not found
+            if (account == null) {
+                return false;
+            }
+
+            // Account closed
+            if (account.getStatusId() != 1) {
+                return false;
+            }
+
+            // Invalid amount
+            if (amount <= 0) {
+                return false;
+            }
+
+            // Insufficient balance
+            if (account.getBalance() < amount) {
+                return false;
+            }
+
+            double newBalance = account.getBalance() - amount;
+
+            boolean updated = accountDAO.updateBalance(account.getAccountId(), newBalance);
+
+            if (!updated) {
+                return false;
+            }
+
+            Transaction transaction = new Transaction();
+
+            transaction.setAccountId(account.getAccountId());
+            transaction.setTransactionTypeId(2);   // Withdrawal
+            transaction.setAmount(amount);
+            transaction.setTransactionDate(new java.sql.Date(System.currentTimeMillis()));
+            transaction.setRemarks("Cash Withdrawal");
+
+            transactionDAO.addTransaction(transaction);
+
+            return true;
+        }
+
 }
